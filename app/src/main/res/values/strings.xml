@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ProblemReporter</string>
+    <string name="empty_list">Aucun problème répertorié</string>
+    <string name="problem_name">Intitulé du problème</string>
+    <string name="problem_description">Précisions éventuelles</string>
+    <string name="problem_type">Type</string>
+    <string name="problem_address">Adresse</string>
+</resources>
