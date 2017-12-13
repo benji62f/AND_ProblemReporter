@@ -19,7 +19,7 @@
         android:gravity="center_vertical|center_horizontal"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/book_adding_btn_scan"
+        android:id="@+id/problem_create_btn_add"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_input_add"
         android:layout_width="wrap_content"

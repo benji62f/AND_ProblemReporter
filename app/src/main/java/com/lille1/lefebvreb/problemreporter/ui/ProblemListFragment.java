@@ -14,7 +14,7 @@ import com.lille1.lefebvreb.problemreporter.R;
  * Created by lefebvreb on 13/12/17.
  */
 
-public class ProblemListFragment extends ListFragment {
+public class ProblemListFragment extends ListFragment implements View.OnClickListener {
 
     public ProblemListFragment() {
         // Required empty public constructor
@@ -45,6 +45,17 @@ public class ProblemListFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        getActivity().findViewById(R.id.problem_create_btn_add).setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.problem_create_btn_add:
+                //open problem create fragment
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_container, new ProblemCreateFragment()).addToBackStack(null).commit();
+                break;
+        }
+    }
 }
