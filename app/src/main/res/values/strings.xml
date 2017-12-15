@@ -12,6 +12,9 @@
     <string name="problem_address">Adresse</string>
     <string name="problem_validate">Valider</string>
 
+    <!-- Problem listing menu -->
+    <string name="menu_insert_fixtures">Insérer les fixtures</string>
+
     <!-- Problem details menu -->
     <string name="menu_edit">Éditer</string>
     <string name="menu_delete">Supprimer</string>

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 
 import com.lille1.lefebvreb.problemreporter.R;
 import com.lille1.lefebvreb.problemreporter.db.entity.ProblemEntity;
+import com.lille1.lefebvreb.problemreporter.db.entity.ProblemTypeEnum;
 import com.lille1.lefebvreb.problemreporter.db.repository.ProblemRepository;
 
 import java.util.ArrayList;
@@ -38,9 +42,28 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         problems = (ArrayList) ProblemRepository.getAll();
+        setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_problem_list, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_problem_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_action_insert_fixtures:
+                insertFixtures();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -88,5 +111,23 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_container, new ProblemAddingFragment()).addToBackStack(null).commit();
                 break;
         }
+    }
+
+    private void insertFixtures() {
+        ProblemRepository.clearTable();
+        ProblemRepository.insert("Problème 1", ProblemTypeEnum.ARBRE_A_ABATTRE.getLabel(), "Métro Cité Scientifique", "Arbre mort, gênant pour la circulation.", 50.6115472, 3.1424036);
+        ProblemRepository.insert("Problème 2", ProblemTypeEnum.ARBRE_A_ABATTRE.getLabel(), "IUT Lille", "Arbre mort, gênant pour la circulation.", 50.6136265, 3.1370606);
+        ProblemRepository.insert("Problème 3", ProblemTypeEnum.ARBRE_A_ABATTRE.getLabel(), "Résidence Universitaire Hélène Boucher", "Arbre mort, gênant pour la circulation.", 50.6106789, 3.1380163);
+        ProblemRepository.insert("Problème 4", ProblemTypeEnum.MAUVAISE_HERBE.getLabel(), "Résidence Léonard de Vinci", "Pelouse à tondre.", 50.6101191, 3.1482737);
+        ProblemRepository.insert("Problème 5", ProblemTypeEnum.MAUVAISE_HERBE.getLabel(), "Bibliothèque universitaire", "Pelouse à tondre.", 50.6093001, 3.1420491);
+        ProblemRepository.insert("Problème 6", ProblemTypeEnum.MAUVAISE_HERBE.getLabel(), "Polytech Lille", "Pelouse à tondre.", 50.6076152, 3.1369324);
+        ProblemRepository.insert("Problème 7", ProblemTypeEnum.DETRITUS.getLabel(), "4 Cantons - Grand Stade", "Amat de détritus à dégager.", 50.6054298, 3.1389672);
+        ProblemRepository.insert("Problème 8", ProblemTypeEnum.HAIE_A_TAILLER.getLabel(), "Résidence Universitaire Albert Camus", "Pelouse à tondre.", 50.6046235, 3.1362821);
+        ProblemRepository.insert("Problème 9", ProblemTypeEnum.MAUVAISE_HERBE.getLabel(), "Restaurant Universitaire Sully", "Pelouse à tondre.", 50.6054554, 3.1364592);
+        ProblemRepository.insert("Problème 10", ProblemTypeEnum.MAUVAISE_HERBE.getLabel(), "Restaurant Universitaire Sully", "Pelouse à tondre.", 50.6096044, 3.1363221);
+        problems = (ArrayList<ProblemEntity>) ProblemRepository.getAll();
+        problemListAdapter.clear();
+        problemListAdapter.addAll(problems);
+        problemListAdapter.notifyDataSetChanged();
     }
 }
