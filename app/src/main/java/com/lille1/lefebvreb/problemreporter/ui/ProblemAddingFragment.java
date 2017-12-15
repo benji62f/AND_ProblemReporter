@@ -43,6 +43,8 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
     private String problemType;
     private Activity activity;
 
+    private boolean onPause = false;
+
     public ProblemAddingFragment() {
         // Required empty public constructor
     }
@@ -57,7 +59,7 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
+
         ArrayList<String> pbs = new ArrayList<>();
         for (ProblemTypeEnum type : ProblemTypeEnum.values()) {
             pbs.add(type.getLabel());
@@ -93,6 +95,12 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
                 String name = ((TextView) getActivity().findViewById(R.id.problem_adding_name)).getText().toString();
                 String description = ((TextView) getActivity().findViewById(R.id.problem_adding_description)).getText().toString();
                 String address = ((TextView) getActivity().findViewById(R.id.problem_adding_address)).getText().toString();
+
+                if(name.equals("") || address.equals("")) {
+                    Toast.makeText(getContext(), R.string.problem_adding_validation, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 problemEntity.setName(name);
                 problemEntity.setDescription(description);
                 problemEntity.setAddress(address);
@@ -106,6 +114,7 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
     @Override
     public void onPause() {
         super.onPause();
+        onPause = true;
         locationManager.removeUpdates(locationListener);
         Log.i(TAG, "onPause, done");
     }
@@ -113,6 +122,7 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
     @Override
     public void onResume(){
         super.onResume();
+        onPause = false;
         Log.i(TAG, "onResume, done");
         getCurrentLocation();
     }
@@ -127,27 +137,28 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                String address = "";
-                try {
-                    AddressAPI addressAPI = new AddressAPI(location.getLatitude(), location.getLongitude());
-                    if(addressAPI.guessAddressFromCoordinates()) {
-                        address = addressAPI.getAddress();
-                        TextView addressInput = activity.findViewById(R.id.problem_adding_address);
-                        if(addressInput != null)
-                            addressInput.setText(address);
+                if(!onPause) {
+                    String address = "";
+                    try {
+                        AddressAPI addressAPI = new AddressAPI(location.getLatitude(), location.getLongitude());
+                        if (addressAPI.guessAddressFromCoordinates()) {
+                            address = addressAPI.getAddress();
+                            TextView addressInput = activity.findViewById(R.id.problem_adding_address);
+                            if (addressInput != null)
+                                addressInput.setText(address);
+                        } else
+                            Toast.makeText(activity, addressAPI.getError(), Toast.LENGTH_LONG).show();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    else
-                        Toast.makeText(activity, addressAPI.getError(), Toast.LENGTH_LONG).show();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    problemEntity.setLatitude(location.getLatitude());
+                    problemEntity.setLongitude(location.getLongitude());
+                    problemEntity.setAddress(address);
                 }
-                problemEntity.setLatitude(location.getLatitude());
-                problemEntity.setLongitude(location.getLongitude());
-                problemEntity.setAddress(address);
             }
 
             @Override

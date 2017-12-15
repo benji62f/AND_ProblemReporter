@@ -15,7 +15,6 @@ import com.lille1.lefebvreb.problemreporter.db.entity.ProblemEntity;
 import com.lille1.lefebvreb.problemreporter.db.repository.ProblemRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by lefebvreb on 13/12/17.
@@ -69,7 +68,12 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long l){
-
+                ProblemEntity selected = problems.get(position);
+                Bundle args = new Bundle();
+                args.putInt("problemId", selected.getId());
+                ProblemDetailsFragment problemDetailsFragment = new ProblemDetailsFragment();
+                problemDetailsFragment.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_container, problemDetailsFragment).addToBackStack(null).commit();
             }
         });
 

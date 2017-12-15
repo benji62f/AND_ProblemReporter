@@ -40,6 +40,8 @@ public class ProblemListAdapter extends ArrayAdapter<ProblemEntity> {
         ((TextView) view.findViewById(R.id.problem_item_name)).setText(item.getName());
 
         ((TextView) view.findViewById(R.id.problem_item_type)).setText(item.getType());
+
+        ((TextView) view.findViewById(R.id.problem_item_address)).setText(item.getAddress());
         return view;
     }
 }

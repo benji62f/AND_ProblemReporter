@@ -2,6 +2,9 @@
     <string name="app_name">Problem Reporter</string>
     <string name="empty_list">Aucun problème répertorié</string>
 
+    <!-- Problem adding fragment -->
+    <string name="problem_adding_validation">Veuillez renseigner un nom et une adresse</string>
+
     <!-- Problem create fragment -->
     <string name="problem_name">Intitulé du problème</string>
     <string name="problem_description">Précisions éventuelles</string>
