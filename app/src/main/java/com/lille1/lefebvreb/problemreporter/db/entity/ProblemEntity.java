@@ -15,7 +15,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = ProblemReporterDatabase.class)
 public class ProblemEntity extends BaseModel {
     @Column
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
     private int id;
 
     @NotNull
@@ -36,11 +36,11 @@ public class ProblemEntity extends BaseModel {
 
     @NotNull
     @Column
-    private String latitude;
+    private double latitude;
 
     @NotNull
     @Column
-    private String longitude;
+    private double longitude;
 
     public int getId() {
         return id;
@@ -82,19 +82,19 @@ public class ProblemEntity extends BaseModel {
         this.description = description;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 }

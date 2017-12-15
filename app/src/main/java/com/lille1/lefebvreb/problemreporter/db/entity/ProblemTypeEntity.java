@@ -5,6 +5,7 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
@@ -14,12 +15,18 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = ProblemReporterDatabase.class)
 public class ProblemTypeEntity extends BaseModel {
     @Column
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
     private int id;
 
     @NotNull
     @Column
+    @Unique
     private String name;
+
+    @Override
+    public String toString(){
+        return name;
+    }
 
     public int getId() {
         return id;

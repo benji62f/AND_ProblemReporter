@@ -1,8 +1,18 @@
 <resources>
-    <string name="app_name">ProblemReporter</string>
+    <string name="app_name">Problem Reporter</string>
     <string name="empty_list">Aucun problème répertorié</string>
+
+    <!-- Problem create fragment -->
     <string name="problem_name">Intitulé du problème</string>
     <string name="problem_description">Précisions éventuelles</string>
     <string name="problem_type">Type</string>
     <string name="problem_address">Adresse</string>
+    <string name="problem_validate">Valider</string>
+
+    <!-- Problem details menu -->
+    <string name="menu_edit">Éditer</string>
+    <string name="menu_delete">Supprimer</string>
+
+    <!-- Permissions -->
+    <string name="permission_gps_missing">Vous devez accepter les permissions GPS afin de pouvoir utiliser l\'application.</string>
 </resources>

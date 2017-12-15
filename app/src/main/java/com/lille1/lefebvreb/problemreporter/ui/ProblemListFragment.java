@@ -7,14 +7,21 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.lille1.lefebvreb.problemreporter.R;
+import com.lille1.lefebvreb.problemreporter.db.entity.ProblemEntity;
+
+import java.util.List;
 
 /**
  * Created by lefebvreb on 13/12/17.
  */
 
 public class ProblemListFragment extends ListFragment implements View.OnClickListener {
+
+    private List<ProblemEntity> problems;
 
     public ProblemListFragment() {
         // Required empty public constructor
@@ -46,6 +53,17 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        /*
+         * Listeners
+         */
+        ListView listView = this.getListView();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long l){
+
+            }
+        });
+
         getActivity().findViewById(R.id.problem_create_btn_add).setOnClickListener(this);
     }
 
@@ -54,7 +72,7 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
         switch (view.getId()){
             case R.id.problem_create_btn_add:
                 //open problem create fragment
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_container, new ProblemCreateFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_container, new ProblemAddingFragment()).addToBackStack(null).commit();
                 break;
         }
     }

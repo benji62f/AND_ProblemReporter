@@ -22,6 +22,7 @@
         android:id="@+id/problem_create_btn_add"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
