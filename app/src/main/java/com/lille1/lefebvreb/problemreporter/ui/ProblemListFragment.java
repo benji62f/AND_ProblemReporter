@@ -12,7 +12,9 @@ import android.widget.ListView;
 
 import com.lille1.lefebvreb.problemreporter.R;
 import com.lille1.lefebvreb.problemreporter.db.entity.ProblemEntity;
+import com.lille1.lefebvreb.problemreporter.db.repository.ProblemRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +23,8 @@ import java.util.List;
 
 public class ProblemListFragment extends ListFragment implements View.OnClickListener {
 
-    private List<ProblemEntity> problems;
+    private ArrayList<ProblemEntity> problems;
+    private ProblemListAdapter problemListAdapter;
 
     public ProblemListFragment() {
         // Required empty public constructor
@@ -35,6 +38,8 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        problems = (ArrayList) ProblemRepository.getAll();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_problem_list, container, false);
     }
@@ -53,10 +58,14 @@ public class ProblemListFragment extends ListFragment implements View.OnClickLis
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        ListView listView = this.getListView();
+
+        problemListAdapter = new ProblemListAdapter(getContext(), R.layout.fragment_problem_list_item, problems);
+        listView.setAdapter(problemListAdapter);
+
         /*
          * Listeners
          */
-        ListView listView = this.getListView();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long l){

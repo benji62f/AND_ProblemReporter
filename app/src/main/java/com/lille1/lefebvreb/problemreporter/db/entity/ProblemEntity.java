@@ -2,7 +2,6 @@ package com.lille1.lefebvreb.problemreporter.db.entity;
 
 import com.lille1.lefebvreb.problemreporter.db.ProblemReporterDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -24,8 +23,7 @@ public class ProblemEntity extends BaseModel {
 
     @NotNull
     @Column
-    @ForeignKey
-    private ProblemTypeEntity type;
+    private String type;
 
     @NotNull
     @Column
@@ -58,11 +56,11 @@ public class ProblemEntity extends BaseModel {
         this.name = name;
     }
 
-    public ProblemTypeEntity getType() {
-        return type;
+    public String getType() {
+        return this.type;
     }
 
-    public void setType(ProblemTypeEntity type) {
+    public void setType(String type) {
         this.type = type;
     }
 

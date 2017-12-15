@@ -17,15 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lille1.lefebvreb.problemreporter.R;
 import com.lille1.lefebvreb.problemreporter.db.entity.ProblemEntity;
-import com.lille1.lefebvreb.problemreporter.db.entity.ProblemTypeEntity;
-import com.lille1.lefebvreb.problemreporter.db.repository.ProblemRepository;
-import com.lille1.lefebvreb.problemreporter.db.repository.ProblemTypeRepository;
+import com.lille1.lefebvreb.problemreporter.db.entity.ProblemTypeEnum;
 import com.lille1.lefebvreb.problemreporter.prgm.AddressAPI;
 
 import java.net.MalformedURLException;
@@ -33,7 +30,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
-import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 
 /**
  * Created by lefebvreb on 13/12/17.
@@ -42,9 +38,9 @@ import static com.raizlabs.android.dbflow.config.FlowManager.getContext;
 public class ProblemAddingFragment extends Fragment implements View.OnClickListener {
 
     private ProblemEntity problemEntity = new ProblemEntity();
-    private ProblemTypeEntity problemTypeEntity;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private String problemType;
     private Activity activity;
 
     public ProblemAddingFragment() {
@@ -61,9 +57,11 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ProblemTypeRepository.initProblemTypes();
-
-        ArrayList<ProblemTypeEntity> pbs = (ArrayList<ProblemTypeEntity>) ProblemTypeRepository.getAll();
+        
+        ArrayList<String> pbs = new ArrayList<>();
+        for (ProblemTypeEnum type : ProblemTypeEnum.values()) {
+            pbs.add(type.getLabel());
+        }
         Spinner spinnerType = getActivity().findViewById(R.id.problem_adding_type);
         ProblemTypeAdapter problemTypeAdapter = new ProblemTypeAdapter(getContext(), R.layout.spinner_item_problem_type, R.id.spinner_problem_type_name, pbs);
         spinnerType.setAdapter(problemTypeAdapter);
@@ -78,12 +76,12 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
         ((Spinner) getActivity().findViewById(R.id.problem_adding_type)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                problemTypeEntity = (ProblemTypeEntity) adapterView.getItemAtPosition(i);
+                problemType = (String) adapterView.getItemAtPosition(i);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                problemTypeEntity = (ProblemTypeEntity) adapterView.getItemAtPosition(0);
+                problemType = (String) adapterView.getItemAtPosition(0);
             }
         });
     }
@@ -94,9 +92,11 @@ public class ProblemAddingFragment extends Fragment implements View.OnClickListe
             case R.id.problem_adding_validate:
                 String name = ((TextView) getActivity().findViewById(R.id.problem_adding_name)).getText().toString();
                 String description = ((TextView) getActivity().findViewById(R.id.problem_adding_description)).getText().toString();
+                String address = ((TextView) getActivity().findViewById(R.id.problem_adding_address)).getText().toString();
                 problemEntity.setName(name);
                 problemEntity.setDescription(description);
-                problemEntity.setType(problemTypeEntity);
+                problemEntity.setAddress(address);
+                problemEntity.setType(problemType);
                 problemEntity.save();
                 getActivity().onBackPressed();
                 break;
